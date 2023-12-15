@@ -5,7 +5,6 @@ from classes import *
 from variables import *
 
 pygame.init()
-
 FPS = 60
 
 screen = pygame.display.set_mode((screenWidth, screenHeight))
@@ -13,10 +12,10 @@ pygame.display.set_caption("Snake")
 
 clock = pygame.time.Clock()
 
-player = pygame.Rect(screenWidth / 2 - playerSize, screenHeight / 2 - playerSize, playerSize, playerSize)
+player = Player(screenWidth / 2 - playerSize, screenHeight / 2 - playerSize)
 apple = getApple()
 
-horizontal = vertical = 0
+horizontal, vertical = 0, 0
 bodyList = []
 pause = False
 
@@ -25,16 +24,17 @@ while True:
     screen.fill(backgroundColor)
     apple.main(screen)
 
+    #Player movement
     if pause == False:
-        player.x += playerSpeed * horizontal
-        player.y += playerSpeed * vertical
+        player.rect.x += player.speed * horizontal
+        player.rect.y += player.speed * vertical
 
     #Manage Collisions
-    if player.colliderect(apple):
+    if player.rect.colliderect(apple):
         apple = getApple()
-        bodyTime += grow
+        bodyTime += growRate
         for body in bodyList:
-            body.time += grow
+            body.time += growRate
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -56,25 +56,23 @@ while True:
     
     for wall in walls:
         wall.main(screen)
-        if player.colliderect(wall):
+        if player.rect.colliderect(wall):
             pause = True
 
-    bodyList.append(Body(player.x + playerSize / 2, player.y + playerSize / 2, bodyTime))
+    bodyList.append(Body(player.rect.x + player.size / 2, player.rect.y + player.size / 2, bodyTime))
     
+    #Handle body and collisions
     count = 0
-    for body in bodyList:
+    for idx, body in enumerate(bodyList):
         body.main(screen)
         if pause == False:
             body.time -= 1
         if body.time < 0:
             bodyList.remove(body)
-        if player.colliderect(body):
-            count += 1
-    
-    if count > collide:
-        pause = True
+        if player.rect.colliderect(body) and idx < bodyTime - collide:
+            pause = True
 
-    pygame.draw.rect(screen, playerColor, player)
+    player.main(screen)
 
     clock.tick(FPS)
     pygame.display.update()

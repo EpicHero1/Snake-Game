@@ -4,21 +4,23 @@ from variables import *
 
 class Player:
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
         self.speed = playerSpeed
-        self.rect = pygame.Rect(self.x, self.y, playerSize, playerSize)
+        self.size = playerSize
+        self.color = playerColor
+        self.rect = pygame.Rect(x, y, self.size, self.size)
     def main(self, display):
-        pygame.draw.rect(display, playerColor, (self.x, self.y, playerSize, playerSize))
+        pygame.draw.rect(display, self.color, self.rect)
 
 class Body:
     def __init__(self, x, y, time):
         self.x = x
         self.y = y
         self.time = time
-        self.rect = pygame.Rect(self.x, self.y, bodySize, bodySize)
+        self.size = bodySize
+        self.color = bodyColor
+        self.rect = pygame.Rect(x, y, self.size, self.size)
     def main(self, display):
-        pygame.draw.circle(display, bodyColor, (self.x, self.y), bodySize)
+        pygame.draw.circle(display, self.color, (self.x, self.y), self.size)
 
 class Apple:
     def __init__(self, x, y):
@@ -29,17 +31,16 @@ class Apple:
         pygame.draw.rect(display, appleColor, (self.x, self.y, appleSize, appleSize))
 
 def getApple():
-    return Apple(randint(50, screenWidth - 50), randint(50, screenHeight - 50))
+    length = wallSize + appleSize
+    return Apple(randint(length, screenWidth - length), randint(length, screenHeight - length))
 
 class Wall:
     def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.heigth = height
-        self.rect = pygame.Rect(self.x, self.y, width, height)
+        self.rect = pygame.Rect(x, y, width, height)
+        self.color = wallColor
     def main(self, display):
-        pygame.draw.rect(display, wallColor, (self.x, self.y, self.width, self.heigth))
+        pygame.draw.rect(display, self.color, self.rect)
+
 walls = []
 walls.append(Wall(0, 0, wallSize, screenHeight))
 walls.append(Wall(screenWidth - wallSize, 0, wallSize, screenHeight))

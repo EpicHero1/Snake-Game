@@ -30,5 +30,5 @@ wallColor = (20, 20, 20)
 wallSize = 15
 
 #Settings
-grow = 10
-collide = 12
+growRate = 10
+collide = 20
