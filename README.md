@@ -4,6 +4,6 @@ Simple snake game made with Python and Pygame.
 * You can move with WASD keys.
 * You can configure "variables.py" file to change basic settings.
 ## How to run the game
-You need  to run the "game.py" file after installing Python.
+You need  to run the "game.py" file after installing Python and Pygame.
 ## Screenshot
 ![snake](snake.PNG)
